@@ -1,4 +1,5 @@
 using Plots
+using Statistics
 
 include("wave_number.jl")
 include("wave_height.jl")
@@ -14,7 +15,6 @@ n_iter = 100000
 t_init = 0
 t_fin = years*365*24*60*60
 h = (t_fin-t_init)/n_iter
-
 t_sec = range(t_init,t_fin,n_iter)
 t = t_sec / (60*60*24*365)
 
@@ -43,7 +43,7 @@ rhos = 1000
 P = 12.5*3600*1
 ws = 0.5*10^-3
 tcr = 0.1
-Co = 0.1
+Co = 0.05
 wind = 6
 ka = 2
 ke = 0.1/(365*24*3600)
@@ -51,9 +51,9 @@ amp = 1.4/2
 RSLR = 5*(10^-3)/(3600*24*365)
 rhom = 1000
 lamda = 0.0001
-beta = 10^-3
-k = 1.3*10^-6
-wtidal = 25000
+beta = 10^10
+k = 0.012/(24*60*60)
+wtidal = 15000
 
 # Preallocating Arrays
 
@@ -122,7 +122,7 @@ for i in 1:n_iter-1
     
     Bfrac = (Bpeak/BMax)
     nuGp = 0.0138
-    AMC = (180)*Bpeak*(nuGp)/(365*24*3600)
+    AMC = (365/2)*Bpeak*(nuGp)/(365*24*60*60)
     por = 1000/2650
     chiref = 0.15
     Rref = AMC*chiref
@@ -187,7 +187,7 @@ for i in 1:n_iter-1
     Umig = (Fm+O)/beta
 
     # Carbon Budget
-
+    
     Rae = ((Ba-Be)+Umig)*po*por*torg
     chilab = 1-chiref
     Rlab  = AMC*chilab
@@ -206,7 +206,7 @@ for i in 1:n_iter-1
 
     dCTOTdt = AMC*wm
     dcTOTdt = AMC
-    dCLABdt = Rlab*wm-k*Clab - Rae
+    dCLABdt = Rlab*wm-k*Clab-Rae
     dcLABdt = Rlab-k*clab
     dCREFdt = Rref*wm-Rae
     dcREFdt = Rref
@@ -295,3 +295,23 @@ label=false,
 xlabel="Years",
 ylabel="Error"
 ))
+
+# Average Methane Flux (mg per m^2 per hr)
+
+mflux1 = MTOT[n_iter]/mean(WM)/years
+
+a = mflux1*(1.0*10^6)/(365*24)
+
+mflux2 =mTOT[n_iter]/years
+
+b = mflux2*(1.0*10^6)/(365*24)
+
+c = cREF[n_iter]/years
+
+d = [a b c years wtidal]
+
+print(d)
+
+# 8.2 to 27.4 mg CH4 per m^2 per hour
+
+# 0.21745274 kg C per m^2 per year
