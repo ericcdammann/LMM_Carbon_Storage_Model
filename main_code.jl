@@ -228,7 +228,6 @@ ylabel="Meters",
 size=(1000,1000)
 )
 display(fig1)
-savefig(fig1,"morphodynamics1.pdf")
 
 p1_cd = plot(t,CREF)
 p2_cd = plot(t,CLAB)
@@ -242,7 +241,6 @@ legend=:outerbottom,
 size=(700,500)
 )
 display(fig2)
-savefig(fig2,"carbonstorage1.pdf")
 
 MFLUX = MFLUX*(1.0*10^6*3600)
 leg_ent = ["RSLR = $(RSLR[l]/((10^-3)/(3600*24*365))) mm/yr" for l in eachindex(RSLR)]
@@ -257,7 +255,6 @@ low_bound = t*0 .+8
 plot!(fig3,t,up_bound,linecolor=:black,linestyle=:dash,label="Comer-Warner et al. 2022")
 plot!(fig3,t,low_bound,linecolor=:black,linestyle=:dash,label=false)
 display(fig3)
-savefig(fig3,"ch4flux1.pdf")
 
 fig4=plot(t,MTOT,
 title="Total Methane Emissions (Mtot)",
@@ -266,7 +263,6 @@ label=["RSLR = 1 mm/year" "RSLR = 3 mm/year" "RSLR = 5 mm/year" "RSLR = 7 mm/yea
 xlabel!("Years")
 ylabel!("kgs of CH4")
 display(fig4)
-savefig(fig4,"ch4emissions1.pdf")
 
 average_mflux = zeros(1,length(RSLR))
 for n in eachindex(RSLR)
