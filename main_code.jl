@@ -20,8 +20,8 @@ t = t_sec / (60*60*24*365)
 
 # Inital Conditions
 
-wm_init = 1000
-wl_init = 9000
+wm_init = 5000
+wl_init = 5000
 hm_init = 0.2602
 hl_init = 3.2786
 wb_init = wl_init+wm_init
@@ -37,7 +37,7 @@ rhos = 1000
 P = 12.5*3600*1
 ws = 0.5*10^-3
 tcr = 0.1
-Co = 0.05
+Co = 0.06
 wind = 6
 ka = 2
 ke = 0.1/(365*24*3600)
@@ -47,7 +47,7 @@ rhom = 1000
 lamda = 0.0001
 beta = 10^10
 kk = 0.012/(24*60*60)
-wtidal = 15*wm_init
+wtidal = 10*wm_init
 
 # Preallocating Arrays
 
@@ -221,7 +221,7 @@ p3_md = plot(t,HL)
 p4_md = plot(t,HM)
 
 fig1=plot(p1_md,p2_md,p3_md,p4_md, layout = 4, 
-title=["Width of Lagoon (wl)" "Width of Marsh (wl)" "Depth of Lagoon (hl)" "Depth of Marsh below MHW (hm)" ] ,
+title=["Width of Lagoon (wl)" "Width of Marsh (wm)" "Depth of Lagoon (hl)" "Depth of Marsh below MHW (hm)" ] ,
 label=["RSLR = 1 mm/year" "RSLR = 3 mm/year" "RSLR = 5 mm/year" "RSLR = 7 mm/year"],
 xlabel="Years",
 ylabel="Meters",
@@ -257,7 +257,7 @@ plot!(fig3,t,low_bound,linecolor=:black,linestyle=:dash,label=false)
 display(fig3)
 
 fig4=plot(t,MTOT,
-title="Total Methane Emissions (Mtot)",
+title="Total CH4 Emissions (CH4tot)",
 label=["RSLR = 1 mm/year" "RSLR = 3 mm/year" "RSLR = 5 mm/year" "RSLR = 7 mm/year"]
 )
 xlabel!("Years")
@@ -269,3 +269,8 @@ for n in eachindex(RSLR)
     average_mflux[n] = mean(MFLUX[:,n])
 end
 print(average_mflux)
+
+#savefig(fig1,"morphodynamics.svg")
+#savefig(fig2,"carbonpools.svg")
+#savefig(fig3,"methaneflux.svg")
+#savefig(fig4,"totalmethane.svg")
